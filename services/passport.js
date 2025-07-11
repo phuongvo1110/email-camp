@@ -10,12 +10,15 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
     User.findById(id).then((user) => done(null, user));
 });
+const isProd = process.env.NODE_ENV === "production";
 passport.use(
     new GoogleStrategy(
         {
             clientID: googleClientID,
             clientSecret: googleClientSecret,
-            callbackURL: "/auth/google/callback",
+            callbackURL: isProd
+                ? "https://email-camp.onrender.com/auth/google/callback"
+                : "http://localhost:3000/auth/google/callback",
         },
         (accessToken, refreshToken, profile, done) => {
             User.findOne({ googleId: profile.id }).then((existingUser) => {
