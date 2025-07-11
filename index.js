@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const passport = require("passport");
 const { mongoURI, cookieKey } = require("./config/key");
@@ -17,6 +18,10 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+        store: MongoStore.create({
+            client: mongoose.connection.getClient(),
+            collectionName: "sessions",
+        }),
     })
 );
 
