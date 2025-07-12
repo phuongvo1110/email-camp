@@ -34,14 +34,14 @@ require("./routes/authRoutes")(app);
 require("./routes/subscribeRoutes")(app);
 require("./routes/pricingPlansRoutes")(app);
 
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/dist"));
+// if (process.env.NODE_ENV === "production") {
+//     app.use(express.static("client/dist"));
 
-    const path = require("path");
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
-    });
-}
+//     const path = require("path");
+//     app.get("*", (req, res) => {
+//         res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+//     });
+// }
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log("Listening on port", PORT);

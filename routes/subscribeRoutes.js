@@ -24,7 +24,9 @@ module.exports = (app) => {
                     payment_method_types: ["card"],
                     line_items: [{ price: priceId, quantity: 1 }],
                     success_url:
-                        "https://email-camp.onrender.com/success",
+                        process.env.NODE_ENV === "production"
+                            ? "https://email-camp.onrender.com/success?session_id={CHECKOUT_SESSION_ID}"
+                            : "http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}",
                     cancel_url:
                         process.env.NODE_ENV === "production"
                             ? "https://email-camp.onrender.com/cancel"
