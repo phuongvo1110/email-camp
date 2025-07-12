@@ -22,7 +22,7 @@ export default function ProfileMenu() {
                 as={Avatar}
                 size="sm"
                 alt="profile-picture"
-                src={!avatarError ? user?.profile.picture : fallbackAvatar}
+                src={!avatarError ? user?.profile?.picture : fallbackAvatar}
                 onError={() => setAvatarError(true)}
             />
             <Menu.Content>
