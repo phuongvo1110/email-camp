@@ -7,14 +7,20 @@ module.exports = (app) => {
         })
     );
 
-    app.get("/auth/google/callback", passport.authenticate("google"));
+    app.get(
+        "/auth/google/callback",
+        passport.authenticate("google"),
+        (req, res) => {
+            res.redirect("http://localhost:5173/dashboard");
+        }
+    );
     app.get("/api/current_user", (req, res) => {
         res.send(req.user);
     });
     app.get("/api/logout", (req, res, next) => {
         req.logout((error) => {
             if (error) next(error);
-            res.send({ message: "Logged out" });
+            res.redirect('/auth')
         });
     });
 };
