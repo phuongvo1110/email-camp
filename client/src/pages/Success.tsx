@@ -20,7 +20,7 @@ export default function Success() {
         const fetchSubInfo = async () => {
             if (!sessionId) return;
             const res = await axios.get<Session>(
-                `api/payment/get-subscription-info?session_id=${sessionId}`
+                `/api/payment/get-subscription-info?session_id=${sessionId}`
             );
             setSubscription(res.data);
         };
