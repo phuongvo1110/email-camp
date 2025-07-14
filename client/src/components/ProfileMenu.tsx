@@ -1,11 +1,5 @@
 import { Avatar, Menu } from "@material-tailwind/react";
-import {
-    Dollar,
-    HeadsetHelp,
-    LogIn,
-    LogOut,
-    UserCircle,
-} from "iconoir-react";
+import { Dollar, HeadsetHelp, LogIn, LogOut, UserCircle } from "iconoir-react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../hooks/useHooks";
 import type { RootState } from "../stores";
@@ -28,14 +22,16 @@ export default function ProfileMenu() {
             <Menu.Content>
                 {user && (
                     <>
-                        <Menu.Item>
-                            <UserCircle className="mr-2 h-[18px] w-[18px]" /> My
-                            Profile
-                        </Menu.Item>
+                        <Link to="/profile">
+                            <Menu.Item>
+                                <UserCircle className="mr-2 h-[18px] w-[18px]" /> My
+                                Profile
+                            </Menu.Item>
+                        </Link>
                         <Link to="pricingplans">
                             <Menu.Item>
-                                <Dollar className="mr-2 h-[18px] w-[18px]" /> Add
-                                Credits
+                                <Dollar className="mr-2 h-[18px] w-[18px]" />{" "}
+                                Add Credits
                             </Menu.Item>
                         </Link>
                     </>

@@ -7,6 +7,7 @@ const { mongoURI, cookieKey } = require("./config/key");
 
 require("./models/User");
 require("./models/PricingPlans");
+require("./models/Survey");
 require("./services/passport");
 
 mongoose.connect(mongoURI);
@@ -19,7 +20,7 @@ app.use(
         secret: cookieKey,
         resave: false,
         saveUninitialized: false,
-    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+        cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
         store: MongoStore.create({
             client: mongoose.connection.getClient(),
             collectionName: "sessions",
@@ -33,7 +34,7 @@ app.use(passport.session());
 require("./routes/authRoutes")(app);
 require("./routes/subscribeRoutes")(app);
 require("./routes/pricingPlansRoutes")(app);
-
+require("./routes/surveyRoutes")(app);
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/dist"));
 

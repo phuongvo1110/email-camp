@@ -7,6 +7,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import Landing from "../pages/Landing";
 import Success from "../pages/Success";
 import PricingPlans from "../pages/PricingPlans";
+import Thanks from "../pages/Thanks";
+import Profile from "../pages/Profile";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +34,7 @@ const router = createBrowserRouter([
                         path: "pricingplans",
                         element: <PricingPlans />,
                     },
+                    { path: "profile", element: <Profile /> },
                 ],
             },
         ],
@@ -43,6 +46,10 @@ const router = createBrowserRouter([
     {
         path: "/success",
         element: <Success />,
+    },
+    {
+        path: "/thanks",
+        element: <Thanks />,
     },
 ]);
 export default router;

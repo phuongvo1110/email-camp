@@ -1,17 +1,17 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Sidebar() {
     return (
         <div className="hidden md:flex md:flex-shrink-0">
             <div className="flex flex-col w-64 bg-white border-r border-gray-200">
-                <div className="flex items-center justify-center h-16 px-4 bg-primary">
+                <Link to="/" className="flex items-center justify-center h-16 px-4 bg-primary">
                     <div className="flex items-center">
                         <i className="fas fa-envelope-open-text text-white text-2xl mr-2" />
                         <span className="text-white font-bold text-xl">
                             Emaily
                         </span>
                     </div>
-                </div>
+                </Link>
                 <div className="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
                     <nav className="flex-1 space-y-2">
                         {[
@@ -20,31 +20,31 @@ export default function Sidebar() {
                                 icon: "fas fa-tachometer-alt",
                                 label: "Dashboard",
                             },
-                            {
-                                to: "/campaigns",
-                                icon: "fas fa-paper-plane",
-                                label: "Campaigns",
-                            },
-                            {
-                                to: "/contacts",
-                                icon: "fas fa-users",
-                                label: "Contacts",
-                            },
-                            {
-                                to: "/analytics",
-                                icon: "fas fa-chart-bar",
-                                label: "Analytics",
-                            },
-                            {
-                                to: "/templates",
-                                icon: "fas fa-envelope",
-                                label: "Templates",
-                            },
-                            {
-                                to: "/settings",
-                                icon: "fas fa-cog",
-                                label: "Settings",
-                            },
+                            // {
+                            //     to: "/campaigns",
+                            //     icon: "fas fa-paper-plane",
+                            //     label: "Campaigns",
+                            // },
+                            // {
+                            //     to: "/contacts",
+                            //     icon: "fas fa-users",
+                            //     label: "Contacts",
+                            // },
+                            // {
+                            //     to: "/analytics",
+                            //     icon: "fas fa-chart-bar",
+                            //     label: "Analytics",
+                            // },
+                            // {
+                            //     to: "/templates",
+                            //     icon: "fas fa-envelope",
+                            //     label: "Templates",
+                            // },
+                            // {
+                            //     to: "/settings",
+                            //     icon: "fas fa-cog",
+                            //     label: "Settings",
+                            // },
                         ].map(({ to, icon, label }) => (
                             <NavLink
                                 key={to}
