@@ -1,0 +1,21 @@
+{
+  "name": "bullboard",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@bull-board/api": "^6.11.1",
+    "@bull-board/express": "^6.11.1",
+    "@bull-board/ui": "^6.11.1",
+    "bull": "^4.16.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}

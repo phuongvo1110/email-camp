@@ -5,6 +5,7 @@ const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
 const mongoose = require("mongoose");
 const Survey = mongoose.model("surveys");
 const _ = require("lodash");
+const emailQueue = require("../queues/emailQueues");
 /**
  * Parse recipients string into array of email objects
  * @param {string} recipientsString - Comma-separated email addresses
@@ -168,9 +169,22 @@ module.exports = (app) => {
             await survey.save();
 
             // Send emails
-            const mailer = new Mailer(survey, surveyTemplate(survey));
-            await mailer.send();
-
+            // const mailer = new Mailer(survey, surveyTemplate(survey));
+            // await mailer.send();
+            // Add to email queue
+            await emailQueue.add(
+                {
+                    survey,
+                    surveyTemplate: surveyTemplate(survey),
+                },
+                {
+                    attempts: 3,
+                    backoff: {
+                        type: "exponential",
+                        delay: 1000,
+                    },
+                }
+            );
             // Deduct credit from user
             req.user.credits -= 1;
             await req.user.save();
@@ -178,13 +192,7 @@ module.exports = (app) => {
             // Return success response
             res.status(201).json({
                 message: "Survey created and emails sent successfully",
-                survey: {
-                    id: survey._id,
-                    title: survey.title,
-                    subject: survey.subject,
-                    recipientCount: recipients.length,
-                    dateSent: survey.dateSent,
-                },
+                survey: survey,
                 remainingCredits: req.user.credits,
             });
         } catch (error) {

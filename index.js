@@ -4,7 +4,8 @@ const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const passport = require("passport");
 const { mongoURI, cookieKey } = require("./config/key");
-
+const bullBoard = require("./dashboard/bull-board");
+const emailQueue = require("./queues/emailQueues");
 require("./models/User");
 require("./models/PricingPlans");
 require("./models/Survey");
@@ -30,11 +31,12 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
+require("./workers/emailProcessor");
 require("./routes/authRoutes")(app);
 require("./routes/subscribeRoutes")(app);
 require("./routes/pricingPlansRoutes")(app);
 require("./routes/surveyRoutes")(app);
+app.use("/admin/queues", bullBoard.getRouter());
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/dist"));
 

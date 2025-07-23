@@ -142,7 +142,18 @@ const surveySlice = createSlice({
                 state.page = action.payload;
             }
         },
-
+        setPages: (
+            state,
+            action: PayloadAction<{
+                pages: number;
+                total: number;
+                page: number;
+            }>
+        ) => {
+            state.pages = action.payload.pages || 0;
+            state.total = action.payload.total || 0;
+            state.page = action.payload.page || 1;
+        },
         // Add a new survey to the state (for optimistic updates)
         addSurvey: (state, action: PayloadAction<Survey>) => {
             state.items.unshift(action.payload);

@@ -1,25 +1,41 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/useHooks";
 import type { RootState } from "../stores";
-import { fetchSurveysWithPagin } from "../stores/slices/surveySlice";
+import {
+    fetchSurveysWithPagin,
+    surveyActions,
+} from "../stores/slices/surveySlice";
 import _ from "lodash";
 import SurveyCard from "./SurveyCard";
 import { Spinner } from "@material-tailwind/react";
 import Pagination from "./Pagination";
 import SortDropdown from "./Sort/SortDropdown";
 import OrderDropdown from "./Order/OrderDropdown";
+import { useFetchSurveys } from "../hooks/useSurvey";
 
 const RecentCampaigns: React.FC = () => {
-    const { itemsWithPagin, loading, pages, page, sort } =
-        useAppSelector((state: RootState) => state.survey);
+    const { pages, page, sort } = useAppSelector(
+        (state: RootState) => state.survey
+    );
+    const { isLoading, data } = useFetchSurveys({
+        page: page,
+        limit: 3,
+        sort: sort,
+    });
     const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(fetchSurveysWithPagin({ page: 1, limit: 3, sort: sort }));
-    }, [dispatch, sort]);
+        if (data) {
+            dispatch(
+                surveyActions.setPages({
+                    pages: data.pages,
+                    total: data.total,
+                    page: data.page,
+                })
+            );
+        }
+    }, [dispatch, data]);
     const handlePageChange = (page: number) => {
-        dispatch(
-            fetchSurveysWithPagin({ page: page, limit: 3, sort: "dateSent" })
-        );
+        dispatch(surveyActions.setCurrentPage(page));
     };
     return (
         <div className="lg:col-span-2">
@@ -39,18 +55,18 @@ const RecentCampaigns: React.FC = () => {
                         <OrderDropdown />
                     </div>
                 </div>
-                {loading ? (
+                {isLoading ? (
                     <div className="w-full flex justify-center items-center">
                         <Spinner className="w-10 h-10" />
                     </div>
-                ) : itemsWithPagin.length === 0 ? (
+                ) : data.surveys && data.surveys.length === 0 ? (
                     <div className="text-center text-gray-500">
                         No recent campaigns found.
                     </div>
                 ) : (
                     <>
                         <div className="space-y-4">
-                            {_.map(itemsWithPagin, (item) => (
+                            {_.map(data.surveys, (item) => (
                                 <SurveyCard key={item._id} survey={item} />
                             ))}
 

@@ -10,6 +10,7 @@ export interface Survey {
     dateSent: string;
     __v: number;
     lastResponded: string;
+    status: string;
 }
 
 export interface Recipient {

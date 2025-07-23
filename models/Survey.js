@@ -12,6 +12,7 @@ const surveySchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: "User" },
     dateSent: Date,
     lastResponded: Date,
+    status: { type: String, default: "pending" },
     // isSent: { type: Boolean, default: false },
 });
 mongoose.model("surveys", surveySchema);

@@ -9,6 +9,7 @@ import type { RootState } from "../stores";
 import Input from "./Input";
 import Textarea from "./Textarea";
 import { Button, Spinner } from "@material-tailwind/react";
+import { useCreateSurvey } from "../hooks/useSurvey";
 // 1. Update IFormSurvey type to include subject
 export type DialogRef = {
     open: () => void;
@@ -34,7 +35,7 @@ const SurveyModal = forwardRef<DialogRef>((_, ref) => {
         (state: RootState) => state.surveyModal
     );
     const { showSuccess, showError } = useToastContext();
-
+    const { mutate, isPending } = useCreateSurvey();
     // Handle survey creation response
     useEffect(() => {
         if (error) {
@@ -44,16 +45,9 @@ const SurveyModal = forwardRef<DialogRef>((_, ref) => {
 
     const onSubmit: SubmitHandler<IFormSurvey> = async (data) => {
         try {
-            const result = await dispatch(createSurvey(data));
-            if (createSurvey.fulfilled.match(result)) {
-                showSuccess(
-                    "Survey Created Successfully!",
-                    "Your survey has been sent to all recipients.",
-                    5000
-                );
-                dialog.current?.close();
-                reset();
-            }
+            mutate(data);
+            dialog.current?.close();
+            reset();
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             showError(

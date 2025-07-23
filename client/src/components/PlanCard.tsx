@@ -7,8 +7,14 @@ interface PlanProps {
         stripePriceId: string;
     };
     onCheckout: (priceId: string) => void;
+    isLoading: boolean;
 }
-const PlanCard: React.FC<PlanProps> = ({ idx, plan, onCheckout }) => {
+const PlanCard: React.FC<PlanProps> = ({
+    idx,
+    plan,
+    onCheckout,
+    isLoading = false,
+}) => {
     return (
         <div
             className={`bg-white p-6 rounded-xl shadow-md pricing-card transition duration-300 ${
@@ -37,6 +43,7 @@ const PlanCard: React.FC<PlanProps> = ({ idx, plan, onCheckout }) => {
                 </li>
             </ul>
             <button
+                disabled={isLoading}
                 onClick={() => onCheckout(plan.stripePriceId)}
                 className={`w-full ${
                     idx === 1 ? "gradient-bg" : "bg-indigo-600"

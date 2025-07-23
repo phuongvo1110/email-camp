@@ -7,15 +7,40 @@ interface SurveyCardProps {
 const SurveyCard: React.FC<SurveyCardProps> = ({ survey }) => {
     return (
         <div className="flex items-start p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-            <div className="flex-shrink-0 p-2 mt-1 mr-3 rounded-full bg-green-100 text-green-600">
-                <i className="fas fa-check-circle" />
+            <div
+                className={`flex-shrink-0 p-2 mt-1 mr-3 rounded-full
+                    ${
+                        survey.status === "pending"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : survey.status === "success"
+                            ? "bg-green-100 text-green-600"
+                            : "bg-red-100 text-red-600"
+                    }
+                `}
+            >
+                <i
+                    className={`fas
+                        ${
+                            survey.status === "pending"
+                                ? "fa-clock"
+                                : survey.status === "success"
+                                ? "fa-check-circle"
+                                : "fa-times-circle"
+                        }
+                    `}
+                />
             </div>
             <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
-                    {survey.subject}
+                    {survey.title}
                 </p>
                 <p className="text-sm text-gray-500">
-                    Sent to {survey.recipients.length} contacts
+                    {survey.status === "pending"
+                        ? "Sending"
+                        : survey.status === "success"
+                        ? "Sent"
+                        : "Failed sending"}{" "}
+                    to {survey.recipients.length} contacts
                 </p>
                 <div className="mt-1">
                     <div className="flex items-center text-xs text-gray-500">
@@ -37,9 +62,7 @@ const SurveyCard: React.FC<SurveyCardProps> = ({ survey }) => {
                         <span>{survey.no} chose No</span>
                         <span className="mx-1">•</span>
                         <span>
-                            <ReactTimeAgo
-                                date={new Date(survey.dateSent)}
-                            />
+                            <ReactTimeAgo date={new Date(survey.dateSent)} />
                         </span>
                     </div>
                 </div>

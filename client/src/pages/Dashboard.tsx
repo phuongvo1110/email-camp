@@ -1,24 +1,15 @@
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import SurveyModal, { type DialogRef } from "../components/SurveyModal";
 import RecentCampaigns from "../components/RecentCampaigns";
 import Header from "../components/Header";
 import StatsCard from "../components/StatsCard";
-import { useAppDispatch, useAppSelector } from "../hooks/useHooks";
-import { fetchSurveys } from "../stores/slices/surveySlice";
-import type { RootState } from "../stores";
+import { useFetchSurveysAll } from "../hooks/useSurvey";
 
 export default function Dashboard() {
     const dialog = useRef<DialogRef>(null);
-    const dispatch = useAppDispatch();
-    const { items: surveys, loading: surveysLoading } = useAppSelector(
-        (state: RootState) => state.survey
-    );
 
     // Fetch surveys on component mount
-    useEffect(() => {
-        dispatch(fetchSurveys());
-    }, [dispatch]);
-
+    const { isLoading, data: surveys } = useFetchSurveysAll();
     // Calculate dynamic stats from survey data
     const statsData = useMemo(() => {
         if (!surveys || surveys.length === 0) {
@@ -89,7 +80,9 @@ export default function Dashboard() {
                         iconBgColor="bg-blue-50"
                         iconTextColor="text-blue-600"
                         changeValue={
-                            surveysLoading ? "..." : `${surveys.length} surveys`
+                            isLoading
+                                ? "..."
+                                : `${surveys?.length ?? 0} surveys`
                         }
                         changeColor="text-blue-600"
                         changeDescription="total campaigns"
@@ -100,16 +93,14 @@ export default function Dashboard() {
                         icon="fas fa-paper-plane"
                         iconBgColor="bg-green-50"
                         iconTextColor="text-green-600"
-                        changeValue={surveysLoading ? "..." : "+2"}
+                        changeValue={isLoading ? "..." : "+2"}
                         changeColor="text-green-600"
                         changeDescription="from last week"
                     />
                     <StatsCard
                         title="Avg. Response Rate"
                         value={
-                            surveysLoading
-                                ? "..."
-                                : `${statsData.avgResponseRate}%`
+                            isLoading ? "..." : `${statsData.avgResponseRate}%`
                         }
                         icon="fas fa-chart-line"
                         iconBgColor="bg-purple-50"
@@ -130,7 +121,7 @@ export default function Dashboard() {
                         icon="fas fa-clock"
                         iconBgColor="bg-yellow-50"
                         iconTextColor="text-yellow-600"
-                        changeValue={surveysLoading ? "..." : "+1"}
+                        changeValue={isLoading ? "..." : "+1"}
                         changeColor="text-green-600"
                         changeDescription="in last 7 days"
                     />

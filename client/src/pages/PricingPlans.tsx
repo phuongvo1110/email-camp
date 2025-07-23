@@ -1,20 +1,13 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/useHooks";
-import { fetchPricingPlans } from "../stores/slices/pricingPlanSlice";
-import type { RootState } from "../stores";
 import type { PricingPlan } from "../models/pricingplan";
-import { createCheckout } from "../stores/slices/checkoutSlice";
 import PlanCard from "../components/PlanCard";
+import { useCreateCheckout } from "../hooks/useCheckout";
+import { useFetchPricingPlans } from "../hooks/usePricingPlans";
 
 export default function PricingPlans() {
-    const dispatch = useAppDispatch();
-    const { items } = useAppSelector((state: RootState) => state.pricingplans);
-
-    useEffect(() => {
-        dispatch(fetchPricingPlans());
-    }, [dispatch]);
+    const { mutate, isPending } = useCreateCheckout();
+    const { data: items } = useFetchPricingPlans();
     const handleCheckout = (priceId: string) => {
-        dispatch(createCheckout(priceId));
+        mutate(priceId);
     };
     return (
         <section id="pricing" className="py-16 bg-gray-50">
@@ -27,9 +20,15 @@ export default function PricingPlans() {
                     used anytime.
                 </p>
                 <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
-                    {items.map((plan: PricingPlan, idx: number) => (
-                        <PlanCard idx={idx} plan={plan} onCheckout={handleCheckout}/>
-                    ))}
+                    {items &&
+                        items.map((plan: PricingPlan, idx: number) => (
+                            <PlanCard
+                                isLoading={isPending}
+                                idx={idx}
+                                plan={plan}
+                                onCheckout={handleCheckout}
+                            />
+                        ))}
                 </div>
                 <div className="mt-12 bg-white p-8 rounded-xl shadow-sm max-w-3xl mx-auto">
                     <h3 className="text-xl font-semibold text-center mb-4">
