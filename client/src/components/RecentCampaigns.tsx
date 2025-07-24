@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/useHooks";
 import type { RootState } from "../stores";
 import {
-    fetchSurveysWithPagin,
     surveyActions,
 } from "../stores/slices/surveySlice";
 import _ from "lodash";

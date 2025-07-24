@@ -4,7 +4,6 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import Question from "./Question";
 import { useAppDispatch, useAppSelector } from "../hooks/useHooks";
 import { useToastContext } from "../hooks/useToastContext";
-import { createSurvey } from "../stores/slices/surveyModalSlice";
 import type { RootState } from "../stores";
 import Input from "./Input";
 import Textarea from "./Textarea";
@@ -30,12 +29,11 @@ const SurveyModal = forwardRef<DialogRef>((_, ref) => {
         handleSubmit,
         formState: { errors },
     } = useForm<IFormSurvey>();
-    const dispatch = useAppDispatch();
     const { loading, error } = useAppSelector(
         (state: RootState) => state.surveyModal
     );
-    const { showSuccess, showError } = useToastContext();
-    const { mutate, isPending } = useCreateSurvey();
+    const { showError } = useToastContext();
+    const { mutate } = useCreateSurvey();
     // Handle survey creation response
     useEffect(() => {
         if (error) {
